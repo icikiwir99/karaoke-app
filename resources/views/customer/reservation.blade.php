@@ -138,7 +138,9 @@
                         </h3>
                         <label class="inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="sr-only peer">
-                            <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
+                            <div class="relative w-11 h-6 bg-slate-800 rounded-full transition-colors duration-300 peer-checked:bg-pink-600">
+                                <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+                            </div>
                             <span class="ml-2.5 text-xs font-bold text-pink-300">Gunakan LC</span>
                         </label>
                     </div>
@@ -170,7 +172,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                                 @foreach($companions as $comp)
                                     <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 cursor-pointer flex items-center space-x-2 text-xs">
-                                        <input type="checkbox" name="selected_companions[]" value="{{ $comp->id }}" class="rounded bg-slate-800 border-slate-700 text-pink-600 focus:ring-0">
+                                        <input type="checkbox" name="selected_companions[]" value="{{ $comp->id }}" data-price="{{ $comp->price_per_hour }}" class="rounded bg-slate-800 border-slate-700 text-pink-600 focus:ring-0">
                                         <div>
                                             <span class="font-bold text-white block">{{ $comp->stage_name }}</span>
                                             <span class="text-[10px] text-pink-400 font-mono">Rp {{ number_format($comp->price_per_hour, 0, ',', '.') }}/Jam</span>
@@ -327,10 +329,20 @@
             // LC cost calculation
             let lcCost = 0;
             if (lcToggle.checked && !packageId) {
-                const qty = parseInt(lcQty.value) || 1;
                 const hours = parseInt(lcHours.value) || duration;
-                // Average LC rate Rp 175.000 / hr
-                lcCost = 175000 * qty * hours;
+                // Gather checked companions with specific rates
+                const checkedCompanions = document.querySelectorAll('input[name="selected_companions[]"]:checked');
+                if (checkedCompanions.length > 0) {
+                    checkedCompanions.forEach(cb => {
+                        const rate = parseFloat(cb.getAttribute('data-price')) || 0;
+                        lcCost += rate * hours;
+                    });
+                } else {
+                    // Fallback to generic LC quantity and default rate
+                    const qty = parseInt(lcQty.value) || 1;
+                    const defaultRate = 175000; // average rate
+                    lcCost = defaultRate * qty * hours;
+                }
             }
 
             // Preorder F&B calculation
