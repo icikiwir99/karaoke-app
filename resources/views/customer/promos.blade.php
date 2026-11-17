@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Promo Menarik & Aturan Operasional - Grand Karaoke')
+@section('title', 'Promo Menarik & Aturan Operasional - HY KAROKE AND LOUNGE')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -52,7 +52,7 @@
             <span class="text-xs font-bold uppercase tracking-wider text-purple-400">FAQ & POLICIES</span>
             <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Aturan Operasional Outlet Karaoke</h2>
             <p class="text-xs sm:text-sm text-slate-400 mt-2">
-                Panduan keamanan dan kenyamanan tamu selama berada di area Grand Karaoke & Lounge.
+                Panduan keamanan dan kenyamanan tamu selama berada di area HY KAROKE AND LOUNGE.
             </p>
         </div>
 
@@ -108,3 +108,4 @@
     </div>
 </div>
 @endsection
+

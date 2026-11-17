@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Reservasi Berhasil - ' . $booking->booking_code . ' - Grand Karaoke')
+@section('title', 'Reservasi Berhasil - ' . $booking->booking_code . ' - HY KAROKE AND LOUNGE')
 
 @section('content')
 <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
@@ -112,3 +112,4 @@
     </div>
 </div>
 @endsection
+

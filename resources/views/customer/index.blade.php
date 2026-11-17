@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Grand Karaoke & Executive Lounge - Premium Entertainment')
+@section('title', 'HY KAROKE AND LOUNGE & Executive Lounge - Premium Entertainment')
 
 @section('content')
 <!-- Hero Section -->
@@ -237,3 +237,4 @@
     </div>
 </div>
 @endsection
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Grand Karaoke & Executive Lounge')</title>
+    <title>@yield('title', 'HY KAROKE AND LOUNGE & Executive Lounge')</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -78,7 +78,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-amber-300 bg-clip-text text-transparent">
-                            GRAND KARAOKE
+                            HY KAROKE AND LOUNGE
                         </span>
                         <span class="block text-[10px] tracking-widest uppercase font-semibold text-purple-400">
                             & Executive Lounge
@@ -230,7 +230,7 @@
                                 <i class="fa-solid fa-microphone-lines text-amber-400"></i>
                             </div>
                         </div>
-                        <span class="text-lg font-bold text-white tracking-wide">GRAND KARAOKE & EXECUTIVE LOUNGE</span>
+                        <span class="text-lg font-bold text-white tracking-wide">HY KAROKE AND LOUNGE & EXECUTIVE LOUNGE</span>
                     </div>
                     <p class="text-sm text-slate-400 leading-relaxed max-w-md mb-4">
                         Destinasi hiburan karaoke premium dengan sound system mutakhir, koleksi minuman & spirits terlengkap, pemandu lagu profesional, dan pelayanan bintang lima.
@@ -259,7 +259,7 @@
                 </div>
             </div>
             <div class="border-t border-slate-800/60 pt-6 text-center text-xs text-slate-500">
-                &copy; {{ date('Y') }} Grand Karaoke & Lounge. Seluruh hak cipta dilindungi undang-undang.
+                &copy; {{ date('Y') }} HY KAROKE AND LOUNGE. Seluruh hak cipta dilindungi undang-undang.
             </div>
         </div>
     </footer>
@@ -273,3 +273,4 @@
     @stack('scripts')
 </body>
 </html>
+

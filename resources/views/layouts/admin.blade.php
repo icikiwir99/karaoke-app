@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel') - Grand Karaoke POS & Management</title>
+    <title>@yield('title', 'Admin Panel') - HY KAROKE AND LOUNGE POS & Management</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -74,7 +74,7 @@
                     </div>
                     <div>
                         <h1 class="text-sm font-black tracking-wide bg-gradient-to-r from-white via-slate-100 to-amber-300 bg-clip-text text-transparent">
-                            GRAND KARAOKE
+                            HY KAROKE AND LOUNGE
                         </h1>
                         <span class="text-[10px] uppercase font-bold tracking-widest text-purple-400">
                             {{ auth()->user()->isOwner() ? 'Executive Suite' : 'Cashier Station' }}
@@ -309,3 +309,4 @@
     @stack('scripts')
 </body>
 </html>
+

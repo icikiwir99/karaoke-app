@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Akun Pelanggan - Grand Karaoke')
+@section('title', 'Daftar Akun Pelanggan - HY KAROKE AND LOUNGE')
 
 @section('content')
 <div class="min-h-[75vh] flex items-center justify-center px-4 py-12">
@@ -80,3 +80,4 @@
     </div>
 </div>
 @endsection
+

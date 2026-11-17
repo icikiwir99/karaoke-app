@@ -74,7 +74,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('customer.reservation')->with('success', 'Akun berhasil didaftarkan! Selamat datang di Grand Karaoke.');
+        return redirect()->route('customer.reservation')->with('success', 'Akun berhasil didaftarkan! Selamat datang di HY KAROKE AND LOUNGE.');
     }
 
     public function logout(Request $request)
@@ -97,3 +97,4 @@ class AuthController extends Controller
         }
     }
 }
+

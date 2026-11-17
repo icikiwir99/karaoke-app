@@ -51,7 +51,7 @@
     <div class="receipt-box w-full max-w-[80mm] bg-white text-black p-5 shadow-2xl rounded-sm text-xs leading-tight">
         <!-- Receipt Header -->
         <div class="text-center pb-3 border-b border-dashed border-gray-400">
-            <h1 class="text-base font-extrabold tracking-wider uppercase">GRAND KARAOKE</h1>
+            <h1 class="text-base font-extrabold tracking-wider uppercase">HY KAROKE AND LOUNGE</h1>
             <p class="text-[10px] tracking-widest font-bold uppercase">& EXECUTIVE LOUNGE</p>
             <p class="text-[9px] text-gray-700 mt-1">Jl. Boulevard Utama No. 88, Golden City</p>
             <p class="text-[9px] text-gray-700">Telp / WA: 0812-3456-7890</p>
@@ -196,7 +196,7 @@
         <div class="text-center pt-3 text-[9px] text-gray-600 space-y-1">
             <p class="font-bold uppercase">Terima Kasih Atas Kunjungan Anda!</p>
             <p>Barang yang sudah dibeli tidak dapat ditukar/dikembalikan.</p>
-            <p class="pt-1 text-[8px] text-gray-400">=== GRAND KARAOKE & LOUNGE POS ===</p>
+            <p class="pt-1 text-[8px] text-gray-400">=== HY KAROKE AND LOUNGE POS ===</p>
         </div>
     </div>
 
@@ -209,3 +209,4 @@
     </script>
 </body>
 </html>
+

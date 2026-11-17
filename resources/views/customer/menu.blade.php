@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Katalog F&B & Minuman Khusus (Miras) - Grand Karaoke')
+@section('title', 'Katalog F&B & Minuman Khusus (Miras) - HY KAROKE AND LOUNGE')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -117,3 +117,4 @@
     @endif
 </div>
 @endsection
+

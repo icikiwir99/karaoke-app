@@ -101,7 +101,7 @@ class Booking extends Model
 
     public function generateWhatsAppUrl(string $adminPhone = '6281274241875'): string
     {
-        $text = "Halo Admin Grand Karaoke & Lounge,\n";
+        $text = "Halo Admin HY KAROKE AND LOUNGE,\n";
         $text .= "Saya ingin konfirmasi pemesanan / reservasi karaoke:\n\n";
         $text .= "📌 *Kode Booking:* " . $this->booking_code . "\n";
         $text .= "👤 *Nama Pemesan:* " . $this->customer_name . "\n";
@@ -140,3 +140,4 @@ class Booking extends Model
         return "https://wa.me/" . preg_replace('/[^0-9]/', '', $adminPhone) . "?text=" . urlencode($text);
     }
 }
+
