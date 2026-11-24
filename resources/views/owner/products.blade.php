@@ -186,12 +186,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Jumlah Stok Awal *</label>
-                    <input type="number" name="stock" required min="0" value="10"
+                    <input type="number" data-stepper name="stock" required min="0" value="10"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-purple-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-rose-300 uppercase mb-1">Batas Minimum Alert (Stok Min) *</label>
-                    <input type="number" name="min_stock" required min="0" value="5"
+                    <input type="number" data-stepper name="min_stock" required min="0" value="5"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-rose-500/40 rounded-xl text-xs text-rose-300 font-mono font-bold focus:outline-none focus:border-rose-400">
                 </div>
             </div>
@@ -277,12 +277,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Stok Fisik Saat Ini *</label>
-                    <input type="number" name="stock" id="edit_stock" required min="0"
+                    <input type="number" data-stepper name="stock" id="edit_stock" required min="0"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-purple-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-rose-300 uppercase mb-1">Batas Minimum Alert (Stok Min) *</label>
-                    <input type="number" name="min_stock" id="edit_min_stock" required min="0"
+                    <input type="number" data-stepper name="min_stock" id="edit_min_stock" required min="0"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-rose-500/40 rounded-xl text-xs text-rose-300 font-mono font-bold focus:outline-none focus:border-rose-400">
                 </div>
             </div>

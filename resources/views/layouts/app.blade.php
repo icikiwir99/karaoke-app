@@ -270,6 +270,7 @@
             menu.classList.toggle('hidden');
         });
     </script>
+    @include('partials.stepper')
     @stack('scripts')
 </body>
 </html>

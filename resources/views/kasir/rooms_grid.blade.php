@@ -297,7 +297,7 @@
 
             <div>
                 <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Jumlah Pesanan (Qty) *</label>
-                <input type="number" name="quantity" value="1" min="1" max="50" required
+                <input type="number" data-stepper name="quantity" value="1" min="1" max="50" required
                     class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-amber-400 font-mono">
             </div>
 

@@ -69,7 +69,7 @@
                             class="w-full px-4 py-2.5 bg-slate-900 border border-amber-500/40 rounded-xl text-sm text-amber-200 focus:outline-none focus:border-amber-400">
                             <option value="" data-price="0" data-room-type="">-- Tanpa Paket (Sewa Kamar Reguler) --</option>
                             @foreach($packages as $pkg)
-                                <option value="{{ $pkg->id }}" data-price="{{ $pkg->price }}" data-room-type="{{ $pkg->room_type }}" {{ (string)$selectedPackageId === (string)$pkg->id ? 'selected' : '' }}>
+                                <option value="{{ $pkg->id }}" data-price="{{ $pkg->price }}" data-room-type="{{ $pkg->room_type }}" {{ (string) old('package_id', $selectedPackageId) === (string) $pkg->id ? 'selected' : '' }}>
                                     {{ $pkg->name }} - {{ $pkg->formatted_price }} (Termasuk Room {{ strtoupper($pkg->room_type) }} {{ $pkg->room_hours }} Jam {{ $pkg->include_lc_qty > 0 ? '+ ' . $pkg->include_lc_qty . ' LC' : '' }})
                                 </option>
                             @endforeach
@@ -83,7 +83,7 @@
                             class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-purple-500">
                             <option value="" data-price="0">-- Pilih Ruangan Kamar --</option>
                             @foreach($rooms as $room)
-                                <option value="{{ $room->id }}" data-price="{{ $room->price_per_hour }}" data-type="{{ $room->type }}" {{ (string)$selectedRoomId === (string)$room->id ? 'selected' : '' }}>
+                                <option value="{{ $room->id }}" data-price="{{ $room->price_per_hour }}" data-type="{{ $room->type }}" {{ (string) old('room_id', $selectedRoomId) === (string) $room->id ? 'selected' : '' }}>
                                     {{ $room->room_number }} - {{ $room->name }} ({{ ucfirst($room->type) }}, Max {{ $room->capacity }} Org) - {{ $room->formatted_price }}/Jam
                                 </option>
                             @endforeach
@@ -94,7 +94,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Tanggal Booking *</label>
-                            <input type="date" name="start_date" id="start_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}"
+                            <input type="date" name="start_date" id="start_date" required min="{{ date('Y-m-d') }}" value="{{ old('start_date', date('Y-m-d')) }}"
                                 class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-purple-500">
                         </div>
                         <div>
@@ -105,26 +105,19 @@
                                     @php
                                         $displayH = $h >= 24 ? $h - 24 : $h;
                                         $timeStr = sprintf('%02d:00', $displayH);
-                                    @endphp
-                                    <option value="{{ $timeStr }}" {{ $timeStr === '19:00' ? 'selected' : '' }}>{{ $timeStr }} WIB</option>
-                                    @php
                                         $timeStrHalf = sprintf('%02d:30', $displayH);
+                                        $selectedHour = old('start_hour', '19:00');
                                     @endphp
-                                    <option value="{{ $timeStrHalf }}">{{ $timeStrHalf }} WIB</option>
+                                    <option value="{{ $timeStr }}" {{ $timeStr === $selectedHour ? 'selected' : '' }}>{{ $timeStr }} WIB</option>
+                                    <option value="{{ $timeStrHalf }}" {{ $timeStrHalf === $selectedHour ? 'selected' : '' }}>{{ $timeStrHalf }} WIB</option>
                                 @endfor
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Durasi Sewa *</label>
-                            <select name="duration_hours" id="duration-selector" required
-                                class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-purple-500">
-                                <option value="1">1 Jam</option>
-                                <option value="2" selected>2 Jam</option>
-                                <option value="3">3 Jam</option>
-                                <option value="4">4 Jam</option>
-                                <option value="5">5 Jam</option>
-                                <option value="6">6 Jam</option>
-                            </select>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Durasi Sewa (Jam) *</label>
+                            {{-- FIX: select diganti input angka dengan tombol +/- (data-stepper) --}}
+                            <input type="number" data-stepper name="duration_hours" id="duration-selector" required min="1" max="6" step="1" value="{{ old('duration_hours', 2) }}"
+                                class="px-3.5 py-2.5 bg-slate-900 text-sm text-white font-mono">
                         </div>
                     </div>
                 </div>
@@ -136,45 +129,38 @@
                             <span class="w-7 h-7 rounded-lg bg-pink-600/30 border border-pink-500/40 text-pink-400 flex items-center justify-center text-xs font-black mr-2.5">3</span>
                             Opsi Add-on Pemandu Lagu (LC)
                         </h3>
+
+                        {{-- Toggle Gunakan LC: abu saat OFF, pink menyala + knob memantul saat ON --}}
                         <label for="include-lc-toggle" class="relative inline-flex items-center cursor-pointer select-none">
-    <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="peer sr-only" {{ old('include_lc') ? 'checked' : '' }}>
+                            <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="peer sr-only" {{ old('include_lc') ? 'checked' : '' }}>
 
-    <!-- Track: abu saat OFF, pink menyala saat ON -->
-    <span class="w-12 h-7 rounded-full bg-slate-700 border border-slate-600 transition-all duration-500
-                 peer-checked:bg-pink-600 peer-checked:border-pink-400
-                 peer-checked:shadow-[0_0_16px_rgba(236,72,153,0.7)]
-                 peer-focus-visible:ring-2 peer-focus-visible:ring-pink-400"></span>
+                            <span class="w-12 h-7 rounded-full bg-slate-700 border border-slate-600 transition-all duration-500
+                                         peer-checked:bg-pink-600 peer-checked:border-pink-400
+                                         peer-checked:shadow-[0_0_16px_rgba(236,72,153,0.7)]
+                                         peer-focus-visible:ring-2 peer-focus-visible:ring-pink-400"></span>
 
-    <!-- Knob bulat: abu saat OFF, putih menyala dan bergeser memantul saat ON -->
-    <span class="absolute left-[4px] top-1/2 -mt-[10px] w-5 h-5 rounded-full bg-slate-400 shadow
-                 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]
-                 peer-checked:translate-x-5 peer-checked:bg-white
-                 peer-checked:shadow-[0_0_12px_rgba(255,255,255,0.9)]"></span>
+                            <span class="absolute left-[4px] top-1/2 -mt-[10px] w-5 h-5 rounded-full bg-slate-400 shadow
+                                         transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                                         peer-checked:translate-x-5 peer-checked:bg-white
+                                         peer-checked:shadow-[0_0_12px_rgba(255,255,255,0.9)]"></span>
 
-    <!-- Teks -->
-    <span class="ml-2.5 text-xs font-bold text-slate-400 transition-colors duration-300 peer-checked:text-pink-300">Gunakan LC</span>
-</label>
+                            <span class="ml-2.5 text-xs font-bold text-slate-400 transition-colors duration-300 peer-checked:text-pink-300">Gunakan LC</span>
+                        </label>
                     </div>
 
                     <div id="lc-options-container" class="hidden space-y-4 pt-4 border-t border-slate-800">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Jumlah Pemandu Lagu (Orang)</label>
-                                <select name="lc_qty" id="lc-qty" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-pink-500">
-                                    <option value="1" selected>1 Orang</option>
-                                    <option value="2">2 Orang</option>
-                                    <option value="3">3 Orang</option>
-                                    <option value="4">4 Orang</option>
-                                </select>
+                                {{-- FIX: select diganti stepper +/-. Otomatis mengikuti jumlah personel yang dicentang --}}
+                                <input type="number" data-stepper name="lc_qty" id="lc-qty" min="1" max="4" step="1" value="{{ old('lc_qty', 1) }}"
+                                    class="px-3.5 py-2.5 bg-slate-900 text-sm text-white font-mono">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Durasi Pemandu Lagu (Jam)</label>
-                                <select name="lc_hours" id="lc-hours" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-pink-500">
-                                    <option value="1">1 Jam</option>
-                                    <option value="2" selected>2 Jam</option>
-                                    <option value="3">3 Jam</option>
-                                    <option value="4">4 Jam</option>
-                                </select>
+                                {{-- FIX: stepper +/-. Maksimal otomatis = durasi sewa kamar --}}
+                                <input type="number" data-stepper name="lc_hours" id="lc-hours" min="1" max="4" step="1" value="{{ old('lc_hours', 2) }}"
+                                    class="px-3.5 py-2.5 bg-slate-900 text-sm text-white font-mono">
                             </div>
                         </div>
 
@@ -183,7 +169,10 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                                 @foreach($companions as $comp)
                                     <label class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-pink-500/40 cursor-pointer flex items-center space-x-2 text-xs">
-                                        <input type="checkbox" name="selected_companions[]" value="{{ $comp->id }}" class="rounded bg-slate-800 border-slate-700 text-pink-600 focus:ring-0">
+                                        {{-- FIX: data-price ditambahkan agar tarif personel terbaca saat menghitung --}}
+                                        <input type="checkbox" name="selected_companions[]" value="{{ $comp->id }}" data-price="{{ $comp->price_per_hour }}"
+                                            {{ in_array($comp->id, old('selected_companions', [])) ? 'checked' : '' }}
+                                            class="rounded bg-slate-800 border-slate-700 text-pink-600 focus:ring-0">
                                         <div>
                                             <span class="font-bold text-white block">{{ $comp->stage_name }}</span>
                                             <span class="text-[10px] text-pink-400 font-mono">Rp {{ number_format($comp->price_per_hour, 0, ',', '.') }}/Jam</span>
@@ -191,6 +180,7 @@
                                     </label>
                                 @endforeach
                             </div>
+                            <p class="text-[10px] text-slate-500 mt-2">Jika tidak memilih personel, biaya dihitung dengan tarif rata-rata LC.</p>
                         </div>
                     </div>
                 </div>
@@ -215,9 +205,11 @@
                                             <div class="overflow-hidden pr-2">
                                                 <p class="font-bold text-slate-200 truncate">{{ $prod->name }}</p>
                                                 <span class="text-[10px] text-amber-400 font-mono font-semibold">{{ $prod->formatted_price }}</span>
+                                                <span class="text-[10px] text-slate-500 block">Stok: {{ $prod->stock }}</span>
                                             </div>
                                             <div class="flex items-center space-x-1 shrink-0">
-                                                <input type="number" min="0" max="20" name="preorder_products[{{ $prod->id }}]" value="0"
+                                                {{-- FIX: data-stepper + max = sisa stok produk --}}
+                                                <input type="number" data-stepper min="0" max="{{ $prod->stock }}" name="preorder_products[{{ $prod->id }}]" value="{{ old('preorder_products.' . $prod->id, 0) }}"
                                                     data-price="{{ $prod->selling_price }}"
                                                     class="preorder-input w-14 px-2 py-1 bg-slate-950 border border-slate-700 rounded text-center text-xs text-white focus:outline-none focus:border-amber-400 font-mono">
                                             </div>
@@ -236,9 +228,11 @@
                                             <div class="overflow-hidden pr-2">
                                                 <p class="font-bold text-slate-200 truncate">{{ $prod->name }}</p>
                                                 <span class="text-[10px] text-purple-400 font-mono font-semibold">{{ $prod->formatted_price }}</span>
+                                                <span class="text-[10px] text-slate-500 block">Stok: {{ $prod->stock }}</span>
                                             </div>
                                             <div class="flex items-center space-x-1 shrink-0">
-                                                <input type="number" min="0" max="20" name="preorder_products[{{ $prod->id }}]" value="0"
+                                                {{-- FIX: data-stepper + max = sisa stok produk --}}
+                                                <input type="number" data-stepper min="0" max="{{ $prod->stock }}" name="preorder_products[{{ $prod->id }}]" value="{{ old('preorder_products.' . $prod->id, 0) }}"
                                                     data-price="{{ $prod->selling_price }}"
                                                     class="preorder-input w-14 px-2 py-1 bg-slate-950 border border-slate-700 rounded text-center text-xs text-white focus:outline-none focus:border-purple-400 font-mono">
                                             </div>
@@ -254,7 +248,7 @@
                 <div class="bg-[#0c1222] border border-slate-800 rounded-2xl p-6 shadow-xl">
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Catatan Khusus / Request Tambahan</label>
                     <textarea name="notes" rows="2" placeholder="Contoh: Tolong siapkan gelas es ekstra dan 2 mic cadangan..."
-                        class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500"></textarea>
+                        class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500">{{ old('notes') }}</textarea>
                 </div>
             </div>
 
@@ -271,9 +265,13 @@
                             <span>Sewa Kamar / Paket</span>
                             <span id="summary-room-cost" class="font-mono font-bold text-white">Rp 0</span>
                         </div>
-                        <div class="flex items-center justify-between text-slate-300">
-                            <span>Add-on Pemandu Lagu (LC)</span>
-                            <span id="summary-lc-cost" class="font-mono font-bold text-pink-400">Rp 0</span>
+                        <div>
+                            <div class="flex items-center justify-between text-slate-300">
+                                <span>Add-on Pemandu Lagu (LC)</span>
+                                <span id="summary-lc-cost" class="font-mono font-bold text-pink-400">Rp 0</span>
+                            </div>
+                            {{-- FIX: rincian perhitungan LC --}}
+                            <p id="summary-lc-detail" class="text-[10px] text-slate-500 mt-1 text-right"></p>
                         </div>
                         <div class="flex items-center justify-between text-slate-300">
                             <span>Pre-Order Minuman & F&B</span>
@@ -305,17 +303,22 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // FIX: tarif default LC dari database (bukan angka tetap)
+        const DEFAULT_LC_RATE = {{ (int) $defaultLcRate }};
+
         const packageSelector = document.getElementById('package-selector');
         const roomSelector = document.getElementById('room-selector');
-        const durationSelector = document.getElementById('duration-selector');
+        const durationInput = document.getElementById('duration-selector');
         const lcToggle = document.getElementById('include-lc-toggle');
         const lcContainer = document.getElementById('lc-options-container');
         const lcQty = document.getElementById('lc-qty');
         const lcHours = document.getElementById('lc-hours');
+        const companionBoxes = document.querySelectorAll('input[name="selected_companions[]"]');
         const preorderInputs = document.querySelectorAll('.preorder-input');
 
         const summaryRoom = document.getElementById('summary-room-cost');
         const summaryLc = document.getElementById('summary-lc-cost');
+        const summaryLcDetail = document.getElementById('summary-lc-detail');
         const summaryFnb = document.getElementById('summary-fnb-cost');
         const summaryGrand = document.getElementById('summary-grand-total');
 
@@ -323,10 +326,43 @@
             return 'Rp ' + Math.round(val).toLocaleString('id-ID');
         }
 
+        function refreshStepper(el) {
+            if (el && typeof el.refreshStepper === 'function') el.refreshStepper();
+        }
+
+        function checkedCompanions() {
+            return Array.from(companionBoxes).filter(cb => cb.checked);
+        }
+
+        // FIX: sinkronkan input LC dengan durasi sewa & personel yang dipilih
+        function syncLcInputs() {
+            const duration = parseInt(durationInput.value) || 1;
+
+            // Durasi LC tidak boleh melebihi durasi sewa kamar
+            lcHours.max = duration;
+            if ((parseInt(lcHours.value) || 1) > duration) lcHours.value = duration;
+            if ((parseInt(lcHours.value) || 0) < 1) lcHours.value = 1;
+
+            // Jika ada personel dicentang, jumlah orang = jumlah personel (dikunci)
+            const checked = checkedCompanions();
+            if (checked.length > 0) {
+                lcQty.max = Math.max(4, checked.length);
+                lcQty.value = checked.length;
+                lcQty.readOnly = true;
+            } else {
+                lcQty.max = 4;
+                lcQty.readOnly = false;
+                if ((parseInt(lcQty.value) || 0) < 1) lcQty.value = 1;
+            }
+
+            refreshStepper(lcHours);
+            refreshStepper(lcQty);
+        }
+
         function calculateTotal() {
             let roomCost = 0;
             const packageId = packageSelector.value;
-            const duration = parseInt(durationSelector.value) || 2;
+            const duration = parseInt(durationInput.value) || 1;
 
             if (packageId) {
                 const opt = packageSelector.options[packageSelector.selectedIndex];
@@ -337,13 +373,27 @@
                 roomCost = pricePerHour * duration;
             }
 
-            // LC cost calculation
+            // FIX: LC dihitung dari tarif personel terpilih x durasi (atau tarif default x orang x durasi)
             let lcCost = 0;
-            if (lcToggle.checked && !packageId) {
-                const qty = parseInt(lcQty.value) || 1;
-                const hours = parseInt(lcHours.value) || duration;
-                // Average LC rate Rp 175.000 / hr
-                lcCost = 175000 * qty * hours;
+            let lcDetail = '';
+            if (lcToggle.checked) {
+                if (packageId) {
+                    lcDetail = 'LC mengikuti ketentuan paket';
+                } else {
+                    const hours = parseInt(lcHours.value) || 1;
+                    const checked = checkedCompanions();
+
+                    if (checked.length > 0) {
+                        let ratePerHourTotal = 0;
+                        checked.forEach(cb => { ratePerHourTotal += parseFloat(cb.getAttribute('data-price')) || 0; });
+                        lcCost = ratePerHourTotal * hours;
+                        lcDetail = checked.length + ' LC pilihan x ' + hours + ' jam (' + formatRp(ratePerHourTotal) + '/jam)';
+                    } else {
+                        const qty = parseInt(lcQty.value) || 1;
+                        lcCost = DEFAULT_LC_RATE * qty * hours;
+                        lcDetail = qty + ' LC x ' + hours + ' jam (tarif rata-rata ' + formatRp(DEFAULT_LC_RATE) + '/jam)';
+                    }
+                }
             }
 
             // Preorder F&B calculation
@@ -358,18 +408,24 @@
 
             summaryRoom.textContent = formatRp(roomCost);
             summaryLc.textContent = formatRp(lcCost);
+            summaryLcDetail.textContent = lcDetail;
             summaryFnb.textContent = formatRp(fnbCost);
             summaryGrand.textContent = formatRp(grandTotal);
         }
 
-        // Toggle LC Container
-        lcToggle.addEventListener('change', function() {
-            if (this.checked) {
-                lcContainer.classList.remove('hidden');
-            } else {
-                lcContainer.classList.add('hidden');
-            }
+        function syncLcPanel() {
+            lcContainer.classList.toggle('hidden', !lcToggle.checked);
+        }
+
+        function onAnyChange() {
+            syncLcInputs();
             calculateTotal();
+        }
+
+        // Toggle LC
+        lcToggle.addEventListener('change', function() {
+            syncLcPanel();
+            onAnyChange();
         });
 
         packageSelector.addEventListener('change', function() {
@@ -384,19 +440,25 @@
                     }
                 }
             }
-            calculateTotal();
+            onAnyChange();
         });
 
-        roomSelector.addEventListener('change', calculateTotal);
-        durationSelector.addEventListener('change', calculateTotal);
-        lcQty.addEventListener('change', calculateTotal);
-        lcHours.addEventListener('change', calculateTotal);
-        preorderInputs.forEach(inp => inp.addEventListener('input', calculateTotal));
+        roomSelector.addEventListener('change', onAnyChange);
+        durationInput.addEventListener('change', onAnyChange);
+        durationInput.addEventListener('input', onAnyChange);
+        lcQty.addEventListener('change', onAnyChange);
+        lcHours.addEventListener('change', onAnyChange);
+        lcHours.addEventListener('input', onAnyChange);
+        companionBoxes.forEach(cb => cb.addEventListener('change', onAnyChange));
+        preorderInputs.forEach(inp => {
+            inp.addEventListener('input', calculateTotal);
+            inp.addEventListener('change', calculateTotal);
+        });
 
-        // Initial Calculation
-        calculateTotal();
+        // Initial state (juga saat halaman kembali dengan old input setelah error)
+        syncLcPanel();
+        onAnyChange();
     });
 </script>
 @endpush
 @endsection
-

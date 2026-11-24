@@ -368,8 +368,18 @@ class KasirController extends Controller
 
     public function cancelReservation($id)
     {
-        $booking = Booking::with('room')->findOrFail($id);
-        $booking->update(['status' => 'cancelled']);
+        $booking = Booking::with(['room', 'items'])->findOrFail($id);
+
+        // FIX: hanya booking pending yang stok pre-order-nya dikembalikan (belum dipakai).
+        // Cek status mencegah stok dikembalikan 2x kalau tombol ditekan berulang.
+        DB::transaction(function () use ($booking) {
+            if ($booking->status === 'pending') {
+                foreach ($booking->items as $item) {
+                    Product::where('id', $item->product_id)->increment('stock', $item->quantity);
+                }
+            }
+            $booking->update(['status' => 'cancelled']);
+        });
 
         return back()->with('success', "Booking {$booking->booking_code} telah dibatalkan.");
     }
@@ -400,6 +410,7 @@ class KasirController extends Controller
     }
 
     // Process POS Checkout (Atomic Transaction & Stock Deduct)
+        // Process POS Checkout (Atomic Transaction & Stock Deduct)
     public function checkout(Request $request)
     {
         $validated = $request->validate([
@@ -463,12 +474,22 @@ class KasirController extends Controller
                     $product = Product::where('id', $item['item_id'])->lockForUpdate()->first();
                     if ($product) {
                         $purchasePrice = $product->purchase_price;
-                        // Deduct stock if not already deducted in pre-order
-                        if (empty($validated['booking_id'])) {
-                            if ($product->stock < $item['quantity']) {
+
+                        // FIX: stok pre-order sudah dikurangi saat reservasi / saat order ke kamar.
+                        // Di kasir hanya kurangi jumlah TAMBAHAN di luar yang sudah tercatat di booking.
+                        $alreadyDeducted = 0;
+                        if (!empty($validated['booking_id'])) {
+                            $alreadyDeducted = (int) BookingItem::where('booking_id', $validated['booking_id'])
+                                ->where('product_id', $product->id)
+                                ->sum('quantity');
+                        }
+                        $needDeduct = max(0, (int) $item['quantity'] - $alreadyDeducted);
+
+                        if ($needDeduct > 0) {
+                            if ($product->stock < $needDeduct) {
                                 throw new \Exception("Stok {$product->name} tidak cukup! Tersisa: {$product->stock}");
                             }
-                            $product->decrement('stock', (int) $item['quantity']);
+                            $product->decrement('stock', $needDeduct);
                         }
                     }
                 } elseif ($item['item_type'] === 'service' && !empty($item['item_id'])) {

@@ -105,7 +105,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Durasi Kamar (Jam) *</label>
-                    <input type="number" name="room_hours" required min="1" value="3"
+                    <input type="number" data-stepper name="room_hours" required min="1" value="3"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-purple-500">
                 </div>
             </div>
@@ -113,12 +113,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-pink-300 uppercase mb-1">Include Jumlah LC (Orang)</label>
-                    <input type="number" name="include_lc_qty" min="0" value="1"
+                    <input type="number" data-stepper name="include_lc_qty" min="0" value="1"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-pink-300 uppercase mb-1">Include Durasi LC (Jam)</label>
-                    <input type="number" name="include_lc_hours" min="0" value="2"
+                    <input type="number" data-stepper name="include_lc_hours" min="0" value="2"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-pink-500">
                 </div>
             </div>
@@ -137,7 +137,7 @@
                             <span class="text-slate-300 truncate pr-2">{{ $prod->name }}</span>
                             <div class="flex items-center space-x-1 shrink-0">
                                 <input type="hidden" name="items[{{ $prod->id }}][product_id]" value="{{ $prod->id }}">
-                                <input type="number" name="items[{{ $prod->id }}][quantity]" min="0" max="10" value="0"
+                                <input type="number" data-stepper name="items[{{ $prod->id }}][quantity]" min="0" max="10" value="0"
                                     class="w-14 px-2 py-1 bg-slate-950 border border-slate-700 rounded text-center text-xs text-white font-mono">
                             </div>
                         </div>

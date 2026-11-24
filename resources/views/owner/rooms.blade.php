@@ -146,7 +146,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Kapasitas (Orang) *</label>
-                    <input type="number" name="capacity" required min="1" value="8"
+                    <input type="number" data-stepper name="capacity" required min="1" value="8"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-amber-400">
                 </div>
             </div>
@@ -219,7 +219,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Kapasitas (Orang) *</label>
-                    <input type="number" name="capacity" id="edit_room_capacity" required min="1"
+                    <input type="number" data-stepper name="capacity" id="edit_room_capacity" required min="1"
                         class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-purple-500">
                 </div>
             </div>
