@@ -136,11 +136,13 @@
                             <span class="w-7 h-7 rounded-lg bg-pink-600/30 border border-pink-500/40 text-pink-400 flex items-center justify-center text-xs font-black mr-2.5">3</span>
                             Opsi Add-on Pemandu Lagu (LC)
                         </h3>
-                        <label class="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="sr-only peer">
-                            <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
-                            <span class="ml-2.5 text-xs font-bold text-pink-300">Gunakan LC</span>
-                        </label>
+                        <label class="lc-switch" for="include-lc-toggle">
+    <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="lc-switch__input" {{ old('include_lc') ? 'checked' : '' }}>
+    <span class="lc-switch__track">
+        <span class="lc-switch__knob"></span>
+    </span>
+    <span class="lc-switch__txt">Gunakan LC</span>
+</label>
                     </div>
 
                     <div id="lc-options-container" class="hidden space-y-4 pt-4 border-t border-slate-800">
