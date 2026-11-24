@@ -136,12 +136,23 @@
                             <span class="w-7 h-7 rounded-lg bg-pink-600/30 border border-pink-500/40 text-pink-400 flex items-center justify-center text-xs font-black mr-2.5">3</span>
                             Opsi Add-on Pemandu Lagu (LC)
                         </h3>
-                        <label class="lc-switch" for="include-lc-toggle">
-    <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="lc-switch__input" {{ old('include_lc') ? 'checked' : '' }}>
-    <span class="lc-switch__track">
-        <span class="lc-switch__knob"></span>
-    </span>
-    <span class="lc-switch__txt">Gunakan LC</span>
+                        <label for="include-lc-toggle" class="relative inline-flex items-center cursor-pointer select-none">
+    <input type="checkbox" name="include_lc" id="include-lc-toggle" value="1" class="peer sr-only" {{ old('include_lc') ? 'checked' : '' }}>
+
+    <!-- Track: abu saat OFF, pink menyala saat ON -->
+    <span class="w-12 h-7 rounded-full bg-slate-700 border border-slate-600 transition-all duration-500
+                 peer-checked:bg-pink-600 peer-checked:border-pink-400
+                 peer-checked:shadow-[0_0_16px_rgba(236,72,153,0.7)]
+                 peer-focus-visible:ring-2 peer-focus-visible:ring-pink-400"></span>
+
+    <!-- Knob bulat: abu saat OFF, putih menyala dan bergeser memantul saat ON -->
+    <span class="absolute left-[4px] top-1/2 -mt-[10px] w-5 h-5 rounded-full bg-slate-400 shadow
+                 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                 peer-checked:translate-x-5 peer-checked:bg-white
+                 peer-checked:shadow-[0_0_12px_rgba(255,255,255,0.9)]"></span>
+
+    <!-- Teks -->
+    <span class="ml-2.5 text-xs font-bold text-slate-400 transition-colors duration-300 peer-checked:text-pink-300">Gunakan LC</span>
 </label>
                     </div>
 
